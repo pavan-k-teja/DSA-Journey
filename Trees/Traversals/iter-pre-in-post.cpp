@@ -1,3 +1,14 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class TreeNode
+{
+public:
+    TreeNode* left;
+    TreeNode* right;
+    int val;
+};
+
 vector<vector<int>> allOrderTraversal(TreeNode *root)
 {
     /*
@@ -7,9 +18,6 @@ vector<vector<int>> allOrderTraversal(TreeNode *root)
     */
     vector<vector<int>> ans;
     vector<int> pre, in, post;
-    ans.pb(pre);
-    ans.pb(in);
-    ans.pb(post);
 
     if (root == nullptr)
         return ans;
@@ -44,5 +52,9 @@ vector<vector<int>> allOrderTraversal(TreeNode *root)
         }
     }
 
+    
+    ans.pb(pre);
+    ans.pb(in);
+    ans.pb(post);
     return post;
 }

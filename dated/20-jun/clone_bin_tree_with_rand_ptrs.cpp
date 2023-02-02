@@ -1,5 +1,4 @@
-#include<iostream>
-#include<unordered_map>
+#include<bits/stdc++.h>
 using namespace std;
 
 struct Node
@@ -67,7 +66,7 @@ Node* cloneTree(Node* tree)
 void copyLeftRightNode(Node* treeNode)
 {
     if (treeNode == NULL)
-        return NULL;
+        return;
  
     Node* left = treeNode->left;
     treeNode->left = newNode(treeNode->key);
@@ -120,7 +119,6 @@ Node* cloneTree(Node* treeNode)
     return cloneNode;
 }
 
-*/
 //***************************************************************
 int main()
 {

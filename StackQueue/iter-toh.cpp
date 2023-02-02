@@ -1,151 +1,49 @@
-// C++ Program for Iterative Tower of Hanoi
 #include <iostream>
-#include <bits/stdc++.h>
+#include <vector>
+#include <stack>
 using namespace std;
 
-// A structure to represent a stack
-struct Stack
+void moveDisk(int a, int b, vector<stack<int>> &stacks)
 {
-unsigned capacity;
-int top;
-int *array;
-};
-
-// function to create a stack of given capacity.
-struct Stack* createStack(unsigned capacity)
-{
-	struct Stack* stack =
-		(struct Stack*) malloc(sizeof(struct Stack));
-	stack -> capacity = capacity;
-	stack -> top = -1;
-	stack -> array =
-		(int*) malloc(stack -> capacity * sizeof(int));
-	return stack;
-}
-
-// Stack is full when top is equal to the last index
-int isFull(struct Stack* stack)
-{
-return (stack->top == stack->capacity - 1);
-}
-
-// Stack is empty when top is equal to -1
-int isEmpty(struct Stack* stack)
-{
-return (stack->top == -1);
-}
-
-// Function to add an item to stack. It increases
-// top by 1
-void push(struct Stack *stack, int item)
-{
-	if (isFull(stack))
-		return;
-	stack -> array[++stack -> top] = item;
-}
-
-// Function to remove an item from stack. It
-// decreases top by 1
-int pop(struct Stack* stack)
-{
-	if (isEmpty(stack))
-		return INT_MIN;
-	return stack -> array[stack -> top--];
-}
-
-//Function to show the movement of disks
-void moveDisk(char fromPeg, char toPeg, int disk)
-{
-	cout <<"Move the disk " << disk <<" from " << fromPeg << " to "<< toPeg << endl;
-}
-
-// Function to implement legal movement between
-// two poles
-void moveDisksBetweenTwoPoles(struct Stack *src,
-			struct Stack *dest, char s, char d)
-{
-	int pole1TopDisk = pop(src);
-	int pole2TopDisk = pop(dest);
-
-	// When pole 1 is empty
-	if (pole1TopDisk == INT_MIN)
+	if (stacks[b].empty() || (!stacks[a].empty() && stacks[a].top() < stacks[b].top()))
 	{
-		push(src, pole2TopDisk);
-		moveDisk(d, s, pole2TopDisk);
+		cout << "Move disk " << stacks[a].top() << " from rod " << char(a + 'A') << " to rod " << char(b + 'A') << "\n";
+		stacks[b].push(stacks[a].top());
+		stacks[a].pop();
 	}
-
-	// When pole2 pole is empty
-	else if (pole2TopDisk == INT_MIN)
-	{
-		push(dest, pole1TopDisk);
-		moveDisk(s, d, pole1TopDisk);
-	}
-
-	// When top disk of pole1 > top disk of pole2
-	else if (pole1TopDisk > pole2TopDisk)
-	{
-		push(src, pole1TopDisk);
-		push(src, pole2TopDisk);
-		moveDisk(d, s, pole2TopDisk);
-	}
-
-	// When top disk of pole1 < top disk of pole2
 	else
-	{
-		push(dest, pole2TopDisk);
-		push(dest, pole1TopDisk);
-		moveDisk(s, d, pole1TopDisk);
-	}
+		moveDisk(b, a, stacks);
 }
 
-//Function to implement TOH puzzle
-void tohIterative(int num_of_disks, struct Stack *src, struct Stack *aux, struct Stack *dest)
+void towerOfHanoi(int n)
 {
-	int i, total_num_of_moves;
-	char s = 'S', d = 'D', a = 'A';
+	cout << "Tower of Hanoi for " << n << " disks:\n";
+	
+	vector<stack<int>> stacks(3);
+	int src = 0, aux = 1, dest = 2;
+	for (int i = n; i > 0; i--)
+		stacks[src].push(i);
 
-	//If number of disks is even, then interchange
-	//destination pole and auxiliary pole
-	if (num_of_disks % 2 == 0)
+	int totalMoves = (1 << n) - 1;
+	if (n % 2 == 0)
+		swap(aux, dest);
+
+	for (int i = 1; i <= totalMoves; i++)
 	{
-		char temp = d;
-		d = a;
-		a = temp;
-	}
-	total_num_of_moves = pow(2, num_of_disks) - 1;
-
-	//Larger disks will be pushed first
-	for (i = num_of_disks; i >= 1; i--)
-		push(src, i);
-
-	for (i = 1; i <= total_num_of_moves; i++)
-	{
-		if (i % 3 == 1)
-		moveDisksBetweenTwoPoles(src, dest, s, d);
-
-		else if (i % 3 == 2)
-		moveDisksBetweenTwoPoles(src, aux, s, a);
-
-		else if (i % 3 == 0)
-		moveDisksBetweenTwoPoles(aux, dest, a, d);
+		if (i % 3 == 0)
+			moveDisk(aux, dest, stacks);
+		else if (i % 3 == 1)
+			moveDisk(src, dest, stacks);
+		else
+			moveDisk(src, aux, stacks);
 	}
 }
 
-// Driver Program
 int main()
 {
-	int num_of_disks = 3;
-
-    stack<int> A, B, C;
-	struct Stack *src, *dest, *aux;
-
-	src = createStack(num_of_disks);
-	aux = createStack(num_of_disks);
-	dest = createStack(num_of_disks);
-
-	tohIterative(num_of_disks, src, aux, dest);
-	// tohIterative(num_of_disks, A, B, C);
+	int n = 3; // number of disks
+	towerOfHanoi(3);
+	cout << "\n";
+	towerOfHanoi(4);
 	return 0;
 }
-
-// This code is contributed by shivanisinghss2110

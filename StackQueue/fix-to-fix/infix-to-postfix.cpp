@@ -45,7 +45,7 @@ string infixToPostfix(string s)
 
         else
         {
-            while (!st.empty() && precedence(c) <= precedence(st.top()))
+            while (!st.empty() && precedence(st.top()) >= precedence(c))
             {
                 if (c == '^' && st.top() == '^')
                     break;

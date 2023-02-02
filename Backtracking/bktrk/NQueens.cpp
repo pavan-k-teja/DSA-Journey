@@ -46,13 +46,10 @@ vector<vector<string>> solveNQueens(int A)
 {
     R = C = vector<int>(A, 0);
     D1 = D2 = vector<int>(2 * A - 1, 0);
-    string row = "";
-    for (int i = 0; i < A; i++)
-        row += ".";
 
     vector<vector<string>> ans;
-
-    vector<string> board(A, row);
+    vector<string> board(A, string(A, '.'));
+    
     solve(ans, board, 0, A);
     return ans;
 }

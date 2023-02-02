@@ -36,3 +36,28 @@ vector<int> postorderTraversal(TreeNode *root)
     }
     return postorder;
 }
+
+vector<int> postorderTraversal_v2(TreeNode *root)
+{
+    vector<int> postorder;
+    if (root == nullptr)
+        return postorder;
+        
+    stack<TreeNode *> st;
+    st.push(root);
+
+    while (!st.empty())
+    {
+        TreeNode* curr = st.top();
+        st.pop();
+        postorder.push_back(curr->val);
+
+        if (curr->left != nullptr)
+            st.push(curr->left);
+        if (curr->right != nullptr)
+            st.push(curr->right);
+    }
+    reverse(postorder.begin(), postorder.end());
+    
+    return postorder;
+}

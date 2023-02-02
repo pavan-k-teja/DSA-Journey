@@ -44,12 +44,36 @@ int mah(int arr[], int size)
     return maxArea;
 }
 
+int largestRectangleArea(vector<int> &histo)
+{
+    stack<int> st;
+    int maxA = 0;
+    int n = histo.size();
+
+    for (int i = 0; i <= n; i++)
+    {
+        while (!st.empty() && (i == n || histo[st.top()] >= histo[i]))
+        {
+            int height = histo[st.top()];
+            st.pop();
+
+            int width = st.empty() ? i : (i - st.top() - 1);
+
+            maxA = max(maxA, width * height);
+        }
+
+        st.push(i);
+    }
+
+    return maxA;
+}
+
 int main()
 {
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
 
-    int arr[] = {6, 2, 5, 4, 5, 1, 6};
+    int arr[] = {2, 1, 5, 6, 2, 3, 1};
     int size = sizeof(arr) / sizeof(arr[0]);
     cout << mah(arr, size);
 
